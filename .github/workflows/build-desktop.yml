@@ -1,0 +1,49 @@
+name: build desktop exe
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "desktop-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: get the code
+        uses: actions/checkout@v4
+
+      - name: set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: copy website files into desktop/web
+        shell: bash
+        run: |
+          mkdir -p desktop/web
+          cp index.html manifest.json service-worker.js desktop/web/
+          cp -r css js img desktop/web/
+
+      - name: install builder tools
+        working-directory: desktop
+        run: npm install
+
+      - name: build the installer
+        working-directory: desktop
+        run: npm run dist
+
+      - name: save the installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-installer
+          path: desktop/dist/*.exe
+
+      - name: attach to release (only for tagged builds)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: desktop/dist/*.exe
