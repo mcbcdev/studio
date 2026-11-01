@@ -258,6 +258,7 @@
       if (f.type === 'folder') {
         const isCollapsed = collapsedFolders.has(f.id);
         row.classList.toggle('collapsed', isCollapsed);
+        row.dataset.folderId = f.id;
         row.innerHTML = '<span class="tree-chevron">▾</span><img src="https://mcbcode.com/img/icons/folder.png" alt=""><span></span>';
         row.querySelector('span:last-child').textContent = f.name;
         container.appendChild(row);

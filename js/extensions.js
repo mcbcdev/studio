@@ -233,7 +233,6 @@
             alert('Minecraft Wiki extension: this is where a wiki search box would open. (demo — proves the extension is really executing in its own sandbox)');
           }
         });
-        studio.ui.registerStatusBarItem({ id: 'wiki.status', text: 'Wiki ready' });
       `
     },
     mcfTools: {

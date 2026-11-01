@@ -139,6 +139,8 @@
     const popupBtn = document.getElementById('account-popup-btn');
     const loginBtn = document.getElementById('btn-login');
     const accountIconImg = document.querySelector('#account-icon img');
+    const accountLinks = document.getElementById('account-popup-links');
+    if (accountLinks) accountLinks.style.display = currentUser ? 'block' : 'none';
 
     if (currentUser) {
       popupTitle.textContent = currentUser.username || 'Account';
