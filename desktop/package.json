@@ -20,10 +20,12 @@
     },
     "files": [
       "src/**/*",
-      "web/**/*"
+      "web/**/*",
+      "assets/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/icon.png"
     },
     "nsis": {
       "oneClick": false,
