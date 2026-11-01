@@ -845,7 +845,7 @@
       border-top: 1px solid var(--border);
     }
     #ext-status-bar.show {
-      display: flex;
+      display: none !important; /* status bar removed */
     }
     #ext-status-bar .status-item {
       white-space: nowrap;
@@ -2041,6 +2041,10 @@
       <div id="account-popup">
         <h4 id="account-popup-title">Account</h4>
         <p id="account-popup-body">checking login status...</p>
+        <div id="account-popup-links" style="display:none;">
+          <button type="button" onclick="window.open('https://mcbcode.com/dripstone', '_blank', 'noopener')">dripstoneAI</button>
+          <button type="button" onclick="window.open('https://mcbcode.com/dashboard', '_blank', 'noopener')">dashboard</button>
+        </div>
         <button id="account-popup-btn" style="display:none;">Login</button>
       </div>
     </div>
@@ -2309,6 +2313,7 @@
   <script src="./js/bedrock-intelligence.js"></script>
   <script src="./js/project-search.js"></script>
   <script src="./js/geometry-preview.js"></script>
+  <script src="./js/mini-menus.js"></script>
   <script src="./js/context-menu.js?v=menu-layout-2"></script>
 </body>
 </html>
