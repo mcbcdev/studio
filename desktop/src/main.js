@@ -1,4 +1,4 @@
-const { app, BrowserWindow, protocol, net, shell } = require("electron");
+const { app, BrowserWindow, protocol, net, shell, session } = require("electron");
 const path = require("path");
 const { pathToFileURL } = require("url");
 
@@ -18,6 +18,42 @@ protocol.registerSchemesAsPrivileged([
 // the website files get copied into this folder when the exe is built
 const WEB_DIR = path.join(__dirname, "..", "web");
 
+// how long you stay logged in after closing the app (in seconds)
+// 60 * 60 * 24 * 30 = 30 days
+const STAY_LOGGED_IN_FOR = 60 * 60 * 24 * 30;
+
+// login cookies with no expiry get deleted when the app closes.
+// this gives them an expiry date so they get saved to disk instead.
+function keepLoggedIn() {
+  const cookies = session.defaultSession.cookies;
+
+  cookies.on("changed", (event, cookie, cause, removed) => {
+    if (removed) return;
+    if (!cookie.session) return;
+
+    const host = cookie.domain.replace(/^\./, "");
+    const url = (cookie.secure ? "https://" : "http://") + host + cookie.path;
+
+    const newCookie = {
+      url: url,
+      name: cookie.name,
+      value: cookie.value,
+      path: cookie.path,
+      secure: cookie.secure,
+      httpOnly: cookie.httpOnly,
+      sameSite: cookie.sameSite,
+      expirationDate: Math.floor(Date.now() / 1000) + STAY_LOGGED_IN_FOR
+    };
+
+    // only keep the domain if it started with a dot
+    if (cookie.domain.startsWith(".")) {
+      newCookie.domain = cookie.domain;
+    }
+
+    cookies.set(newCookie).catch(() => {});
+  });
+}
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1400,
@@ -26,6 +62,7 @@ function createWindow() {
     minHeight: 600,
     backgroundColor: "#1e2327",
     autoHideMenuBar: true,
+    icon: path.join(__dirname, "..", "assets", "icon.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -60,6 +97,7 @@ app.whenReady().then(() => {
     return net.fetch(pathToFileURL(fullPath).toString());
   });
 
+  keepLoggedIn();
   createWindow();
 
   app.on("activate", () => {
@@ -67,6 +105,11 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+// make sure cookies are written to disk before the app closes
+app.on("before-quit", () => {
+  session.defaultSession.cookies.flushStore().catch(() => {});
 });
 
 app.on("window-all-closed", () => {
