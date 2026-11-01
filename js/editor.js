@@ -718,6 +718,7 @@
         method: 'POST',
         body: JSON.stringify({ save_id: entry.saveId, content: entry.cm.getValue(), filename })
       });
+      updateCloudFileCache(entry.saveId, entry.cm.getValue());
       markDirty(id, false);
     } catch (e) {
       if (dot) dot.title = 'save failed: ' + e.message;
@@ -788,6 +789,7 @@
             content: entry.cm.getValue()
           })
         });
+        if (entry.saveId) updateCloudFileCache(entry.saveId, entry.cm.getValue());
         // keep the in-memory project file lists in sync so the sidebar tree
         // and cloud browser show the new name without needing a refetch
         [currentProject, cloudNav].forEach(proj => {
@@ -900,7 +902,7 @@
   document.getElementById('openfile-close').addEventListener('click', () => {
     openfileOverlay.classList.remove('show');
   });
-  // "Open mcbCode File" -> opens the real cloud file browser (needs login)
+  // "Open mcbCode Project" -> opens the project picker (needs login)
   document.getElementById('btn-open-mcbcode').addEventListener('click', () => {
     openfileOverlay.classList.remove('show');
     openCloudBrowser();

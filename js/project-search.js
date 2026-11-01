@@ -81,7 +81,7 @@
     if (opened) return opened[1].cm.getValue();
     if (file.zipEntry) return file.zipEntry.async('string');
     if (file.save_id && typeof api === 'function') {
-      const saved = await api('/save?id=' + encodeURIComponent(file.save_id));
+      const saved = await loadCloudFile(file.save_id);
       return typeof saved?.content === 'string' ? saved.content : null;
     }
     return null;
@@ -344,6 +344,7 @@
             method: 'POST',
             body: JSON.stringify({ save_id: item.file.save_id, content: fresh.updated, filename: item.file.name })
           });
+          updateCloudFileCache(item.file.save_id, fresh.updated);
           if (opened) {
             opened[1].cm.setValue(fresh.updated);
             markDirty(opened[0], false);

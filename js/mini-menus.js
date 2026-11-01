@@ -139,7 +139,7 @@
       if (file.type === 'file') {
         if (!file.save_id) { alert('this kind of file cant be renamed from here yet'); return; }
         const entry = tabId ? editors[tabId] : null;
-        content = entry ? entry.cm.getValue() : ((await api('/save?id=' + encodeURIComponent(file.save_id))).content || '');
+        content = entry ? entry.cm.getValue() : ((await loadCloudFile(file.save_id)).content || '');
       }
       await api('/project/file', {
         method: 'POST',
@@ -152,6 +152,7 @@
         })
       });
       file.name = name;
+      if (file.type === 'file' && file.save_id) updateCloudFileCache(file.save_id, content);
       // keep an open tab for this file in sync
       if (tabId) {
         const label = document.querySelector(`#tab-bar .tab[data-tab="${CSS.escape(tabId)}"] .tab-label`);

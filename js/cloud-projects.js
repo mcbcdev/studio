@@ -7,6 +7,32 @@
   // otherwise { code, name, files (flat list from /project), stack: [parentId,...] }
   let cloudNav = null;
 
+  // ---- session caches (cleared only when the page is refreshed/closed) ----
+  // file contents are fetched ONLY when that exact file is opened (or searched),
+  // then kept here so the worker/database is never asked for the same file twice.
+  // stores promises so two requests for the same file at the same time share one fetch.
+  const cloudFileCache = new Map();   // save_id -> Promise<{ content }>
+  const projectTreeCache = new Map(); // project code -> files array (no contents, just the tree)
+  let projectListCache = null;        // result of GET /projects
+
+  function loadCloudFile(saveId) {
+    const key = String(saveId);
+    if (!cloudFileCache.has(key)) {
+      const pending = api('/save?id=' + encodeURIComponent(key))
+        .then(data => ({ content: typeof data.content === 'string' ? data.content : '' }));
+      pending.catch(() => cloudFileCache.delete(key)); // failed fetches arent cached, so retrying works
+      cloudFileCache.set(key, pending);
+    }
+    return cloudFileCache.get(key);
+  }
+  // call after a save/rename so the cache matches what the server now has
+  function updateCloudFileCache(saveId, content) {
+    if (saveId == null) return;
+    cloudFileCache.set(String(saveId), Promise.resolve({ content }));
+  }
+  window.loadCloudFile = loadCloudFile;
+  window.updateCloudFileCache = updateCloudFileCache;
+
   function openCloudBrowser() {
     if (!currentUser) {
       const goLogin = confirm("You need to be logged in to open a file from your mcbCode account. Go log in now?");
@@ -32,10 +58,10 @@
   }
 
   async function renderProjectList() {
-    cloudfileTitle.textContent = 'Open mcbCode File';
+    cloudfileTitle.textContent = 'Open mcbCode Project';
     cloudfileList.innerHTML = '<div class="cloudfile-loading">loading your projects...</div>';
     try {
-      const data = await api('/projects');
+      const data = projectListCache || (projectListCache = await api('/projects'));
       cloudfileList.innerHTML = '';
 
       if (!data.projects.length && !data.collab_projects.length) {
@@ -80,12 +106,19 @@
   async function openProject(code, name) {
     cloudfileList.innerHTML = '<div class="cloudfile-loading">loading project...</div>';
     try {
-      const data = await api('/project?code=' + encodeURIComponent(code));
-      cloudNav = { code, name, files: data.files, stack: [null] }; // stack of parent_id levels, starting at root
-      currentProject = { code, name, files: data.files }; // tracked separately from cloudNav so the sidebar tree
-                                                             // stays put even after this browser popup closes
+      // the tree (names + folders only, no file contents) is fetched once per project per page load
+      if (!projectTreeCache.has(code)) {
+        const data = await api('/project?code=' + encodeURIComponent(code));
+        projectTreeCache.set(code, data.files);
+      }
+      const files = projectTreeCache.get(code);
+      cloudNav = { code, name, files, stack: [null] };
+      currentProject = { code, name, files }; // the whole project now lives in the sidebar explorer
+      collapsedFolders.clear();
       window.studioSyncBedrockProfile?.();
-      renderFolder();
+      cloudfileOverlay.classList.remove('show');
+      document.getElementById('sidebar-wrap')?.classList.remove('collapsed');
+      renderSidebarTree();
       window.refreshStudioSearch?.();
     } catch (e) {
       cloudfileList.innerHTML = `<div class="cloudfile-error">${e.message}</div>`;
@@ -162,9 +195,9 @@
     }
     cloudfileList.innerHTML = '<div class="cloudfile-loading">opening file...</div>';
     try {
-      const data = await api('/save?id=' + encodeURIComponent(file.save_id));
+      const data = await loadCloudFile(file.save_id);
       const id = 'cloud_' + file.save_id;
-      openTab(id, data.filename || file.name, data.content || '', file.save_id, file.id, cloudNav ? cloudNav.code : null);
+      openTab(id, file.name, data.content || '', file.save_id, file.id, cloudNav ? cloudNav.code : null);
       cloudfileOverlay.classList.remove('show');
       renderSidebarTree();
       setActiveTreeFileByTabId(id);
@@ -297,10 +330,11 @@
       alert('file type unsupported');
       return;
     }
+    const id = 'cloud_' + file.save_id;
+    if (editors[id]) { activateTab(id); setActiveTreeFileByTabId(id); return; } // already open, no request needed
     try {
-      const data = await api('/save?id=' + encodeURIComponent(file.save_id));
-      const id = 'cloud_' + file.save_id;
-      openTab(id, data.filename || file.name, data.content || '', file.save_id, file.id, currentProject ? currentProject.code : null);
+      const data = await loadCloudFile(file.save_id);
+      openTab(id, file.name, data.content || '', file.save_id, file.id, currentProject ? currentProject.code : null);
       setActiveTreeFileByTabId(id);
     } catch (e) {
       alert("Couldn't open that file: " + e.message);

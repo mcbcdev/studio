@@ -91,7 +91,7 @@
           <button type="button" role="menuitem" data-context-action="open-file">open file options</button>
         </div>
       </div>
-      <button type="button" role="menuitem" data-context-action="open-cloud">open mcbCode file</button>
+      <button type="button" role="menuitem" data-context-action="open-cloud">open mcbCode project</button>
     </div>
     <div class="context-divider" role="separator"></div>
     <div role="group">
