@@ -347,3 +347,91 @@ button.activity-icon:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ===== Bedrock Script API IntelliSense (js/bedrock-script-api.js) ===== */
+.code-editor { position: relative; }
+
+.sapi-pill {
+  position: absolute; right: 18px; bottom: 10px; z-index: 6;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px; font: 11px var(--font-mono);
+  color: var(--text-sub); background: var(--bg-4);
+  border: 1px solid var(--border-strong); border-radius: 999px; cursor: pointer; opacity: 0.85;
+}
+.sapi-pill:hover { opacity: 1; color: var(--text-main); }
+.sapi-pill-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); }
+.sapi-pill.ready .sapi-pill-dot { background: var(--accent); }
+.sapi-pill.loading .sapi-pill-dot { background: #ff9900; animation: sapi-pulse 1s ease-in-out infinite; }
+.sapi-pill.error .sapi-pill-dot { background: #e5484d; }
+@keyframes sapi-pulse { 50% { opacity: 0.3; } }
+
+.sapi-menu {
+  position: fixed; z-index: 3000; width: 300px; padding: 8px;
+  background: var(--bg-4); border: 1px solid var(--border-strong); border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5); font-size: 12px; color: var(--text-body);
+}
+.sapi-menu-title { font-weight: 600; color: var(--text-main); padding: 2px 4px 6px; }
+.sapi-menu-item {
+  display: flex; flex-direction: column; align-items: flex-start; width: 100%;
+  padding: 6px 8px; background: none; border: 0; border-radius: var(--radius); color: inherit; cursor: pointer; text-align: left;
+}
+.sapi-menu-item:hover { background: var(--bg-6); }
+.sapi-menu-item.active .sapi-menu-label { color: var(--accent); }
+.sapi-menu-desc { color: var(--text-muted); font-size: 11px; }
+.sapi-menu-note { padding: 4px 8px; color: var(--text-muted); font-size: 11px; word-break: break-word; }
+
+.sapi-tooltip {
+  position: fixed; z-index: 2500; max-width: 520px; max-height: 340px; overflow: auto;
+  padding: 8px 10px; background: var(--bg-4); border: 1px solid var(--border-strong);
+  border-radius: var(--radius); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  font: 12px/1.45 system-ui, sans-serif; color: var(--text-body);
+}
+.sapi-docpanel { max-width: 420px; }
+.sapi-sig { margin: 0 0 6px; white-space: pre-wrap; font: 12px var(--font-mono); color: var(--syn-def); }
+.sapi-doc p { margin: 0 0 6px; }
+.sapi-doc code, .sapi-param code { font: 11px var(--font-mono); color: var(--syn-property); }
+.sapi-doc pre { margin: 4px 0; padding: 6px 8px; overflow: auto; background: var(--bg-3); border-radius: var(--radius); }
+.sapi-doc pre code { color: var(--text-body); }
+.sapi-example { max-height: 160px; overflow: auto; }
+.sapi-sec { margin-top: 6px; }
+.sapi-sec-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+.sapi-params { margin: 4px 0; }
+.sapi-param { margin: 2px 0; }
+.sapi-param code { margin-right: 6px; }
+.sapi-avail { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.sapi-avail-text { color: var(--text-muted); font-size: 11px; }
+.sapi-badge { padding: 0 6px; border-radius: 999px; font-size: 10px; font-weight: 600; }
+.sapi-badge.stable { color: #06251b; background: var(--accent); }
+.sapi-badge.beta { color: #1b1200; background: #ffb020; }
+.sapi-warn { margin: 4px 0; padding: 3px 6px; color: #ffcf70; background: rgba(255, 176, 32, 0.12); border-radius: var(--radius); font-size: 11px; }
+.sapi-link { display: inline-block; margin-top: 6px; color: var(--accent); font-size: 11px; }
+.sapi-signature { max-width: 560px; }
+.sapi-sig-line { font: 12px var(--font-mono); white-space: pre-wrap; }
+.sapi-sig-param.active { color: var(--accent); font-weight: 700; text-decoration: underline; }
+.sapi-sig-doc { margin-top: 4px; }
+.sapi-sig-count { margin-top: 4px; color: var(--text-muted); font-size: 11px; }
+
+.CodeMirror-hint.sapi-hint { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sapi-kind {
+  flex: none; width: 15px; height: 15px; line-height: 15px; text-align: center; border-radius: 3px;
+  font: 700 10px var(--font-mono); color: #111; background: var(--text-muted);
+}
+.sapi-k-method, .sapi-k-function, .sapi-k-constructor { background: var(--syn-def); }
+.sapi-k-property, .sapi-k-getter, .sapi-k-setter { background: var(--syn-property); }
+.sapi-k-class, .sapi-k-interface, .sapi-k-type { background: #ffb020; }
+.sapi-k-enum, .sapi-k-enum-member { background: var(--syn-atom); }
+.sapi-k-module, .sapi-k-external-module-name, .sapi-k-directory { background: var(--accent); }
+.sapi-name.deprecated { text-decoration: line-through; opacity: 0.7; }
+.sapi-hint-source { margin-left: auto; padding-left: 14px; color: var(--text-muted); font-size: 11px; }
+.sapi-hint-source.beta { color: #ffb020; }
+
+.CodeMirror-lint-mark-beta, .CodeMirror-lint-mark-deprecated {
+  border-bottom: 1px dotted #ffb020; background-image: none;
+}
+.CodeMirror-lint-mark-deprecated { text-decoration: line-through; border-bottom: 0; }
+.CodeMirror-lint-marker-beta, .CodeMirror-lint-marker-deprecated {
+  background-image: none; position: relative;
+}
+.CodeMirror-lint-marker-beta::after, .CodeMirror-lint-marker-deprecated::after {
+  content: ""; position: absolute; left: 4px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #ffb020;
+}

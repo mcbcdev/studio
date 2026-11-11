@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-11-11T00:44:11.369Z",
+  "defaultChannel": "stable",
+  "channels": {
+    "stable": {
+      "label": "Stable",
+      "packages": {
+        "@minecraft/server": {
+          "version": "2.11.0",
+          "kind": "api",
+          "dir": "packages/server@2.11.0",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/server-ui": {
+          "version": "2.3.0",
+          "kind": "api",
+          "dir": "packages/server-ui@2.3.0",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/common": {
+          "version": "1.3.0",
+          "kind": "support",
+          "dir": "packages/common@1.3.0",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/vanilla-data": {
+          "version": "1.26.60",
+          "kind": "support",
+          "dir": "packages/vanilla-data@1.26.60",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts",
+            "mojang-biome.d.ts",
+            "mojang-block.d.ts",
+            "mojang-cameraPresets.d.ts",
+            "mojang-cooldownCategory.d.ts",
+            "mojang-dimension.d.ts",
+            "mojang-effect.d.ts",
+            "mojang-enchantment.d.ts",
+            "mojang-entity.d.ts",
+            "mojang-feature.d.ts",
+            "mojang-item.d.ts",
+            "mojang-potionDelivery.d.ts",
+            "mojang-potionEffect.d.ts"
+          ]
+        }
+      },
+      "unavailable": [
+        "@minecraft/server-gametest",
+        "@minecraft/server-admin",
+        "@minecraft/server-net",
+        "@minecraft/debug-utilities",
+        "@minecraft/server-editor"
+      ]
+    },
+    "beta": {
+      "label": "Beta",
+      "packages": {
+        "@minecraft/server": {
+          "version": "2.12.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/server@2.12.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/server-ui": {
+          "version": "2.4.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/server-ui@2.4.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/server-gametest": {
+          "version": "1.0.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/server-gametest@1.0.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/server-admin": {
+          "version": "1.0.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/server-admin@1.0.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/server-net": {
+          "version": "1.0.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/server-net@1.0.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/debug-utilities": {
+          "version": "1.0.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/debug-utilities@1.0.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/server-editor": {
+          "version": "0.1.0-beta.1.26.63-stable",
+          "kind": "api",
+          "dir": "packages/server-editor@0.1.0-beta.1.26.63-stable",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/common": {
+          "version": "1.3.0",
+          "kind": "support",
+          "dir": "packages/common@1.3.0",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts"
+          ]
+        },
+        "@minecraft/vanilla-data": {
+          "version": "1.26.60",
+          "kind": "support",
+          "dir": "packages/vanilla-data@1.26.60",
+          "entry": "index.d.ts",
+          "files": [
+            "index.d.ts",
+            "mojang-biome.d.ts",
+            "mojang-block.d.ts",
+            "mojang-cameraPresets.d.ts",
+            "mojang-cooldownCategory.d.ts",
+            "mojang-dimension.d.ts",
+            "mojang-effect.d.ts",
+            "mojang-enchantment.d.ts",
+            "mojang-entity.d.ts",
+            "mojang-feature.d.ts",
+            "mojang-item.d.ts",
+            "mojang-potionDelivery.d.ts",
+            "mojang-potionEffect.d.ts"
+          ]
+        }
+      },
+      "unavailable": []
+    }
+  }
+}
