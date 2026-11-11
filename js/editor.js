@@ -337,6 +337,8 @@
     if (lintableFilename(name)) gutters.push('CodeMirror-lint-markers');
     cm.setOption('gutters', gutters);
     cm.setOption('lint', lintOptionsForFilename(name));
+    // .js files get Bedrock Script API IntelliSense (js/bedrock-script-api.js); other files are detached from it
+    window.studioScriptApiEditorReady?.(id, cm, name);
   }
 
   // JavaScript/JSON use JSHint; .mcfunction uses the conservative Bedrock checks above.
